@@ -1,0 +1,82 @@
+book_by_author
+SELECT library.author, library.id, library.name, library.year_issue, library_group.group_name, library.num_hall
+FROM library_group INNER JOIN library ON library_group.id = library.group_id
+WHERE (((library.author)=[Введите автора произведения]));
+
+
+book_by_date
+SELECT library.year_issue, library.id, library.name, library.author, library_group.group_name, library.num_hall
+FROM library_group INNER JOIN library ON library_group.id = library.group_id
+WHERE (((library.year_issue)=[Введите год выпуска книги]));
+
+
+book_by_id
+SELECT library.name, library.year_issue, library.author, fio.surname, fio.name, fio.patronymic, fio_group.group_name
+FROM fio_group INNER JOIN (fio INNER JOIN library ON fio.id = library.id_took) ON fio_group.id = fio.group_id
+WHERE (((library.id)=[Введте ID книги]));
+
+
+book_by_name
+SELECT library.id, library.name, library.year_issue, library.author, fio.surname, fio.name, fio.patronymic, fio_group.group_name
+FROM fio_group INNER JOIN (fio INNER JOIN library ON fio.id = library.id_took) ON fio_group.id = fio.group_id
+WHERE (((library.name)=[Введте название произведения]));
+
+
+canTake
+SELECT library.id, library.name, library.year_issue, library.author, library_group.group_name, library.num_hall
+FROM library_group INNER JOIN library ON library_group.id = library.group_id
+WHERE (((library.id_took) Is Null));
+
+
+nameTake_by_id
+SELECT fio.surname, fio.name, fio.patronymic, library.name, library.year_issue, library.author
+FROM fio INNER JOIN library ON fio.id = library.id_took
+WHERE (((fio.id)=[Введите ID пользователя]));
+
+
+nameTake_by_surn
+SELECT fio.id, fio.surname, fio.name, fio.patronymic, library.name, library.year_issue, library.author
+FROM fio INNER JOIN library ON fio.id = library.id_took
+WHERE (((fio.surname)=[Введите фамилию пользователя]));
+
+
+outReturnDate
+SELECT library.when_taken, library.when_return, library.name AS library_name, library.year_issue, library.author, fio.surname, fio.name AS fio_name, fio.patronymic, fio_group.group_name, fio.location
+FROM (fio_group INNER JOIN fio ON fio_group.[id] = fio.[group_id]) INNER JOIN library ON fio.[id] = library.[id_took]
+WHERE (((library.when_return)>Date$()));
+
+
+pens_by_pos
+SELECT fio.surname, fio.name, fio.patronymic, library.name, library.year_issue, library.author
+FROM (fio INNER JOIN library ON fio.id = library.id_took) INNER JOIN pensioners ON fio.id = pensioners.id
+WHERE (((pensioners.position)=[Введите мето работы пенсионера]));
+
+
+pupils_by_class
+SELECT fio.surname, fio.name, fio.patronymic, library.name, library.year_issue, library.author
+FROM (fio INNER JOIN library ON fio.id = library.id_took) INNER JOIN pupils ON fio.id = pupils.id
+WHERE (((pupils.class)=[Введите класс школы]));
+
+
+scientists_by_pos
+SELECT fio.surname, fio.name, fio.patronymic, library.name, library.year_issue, library.author
+FROM (fio INNER JOIN library ON fio.id = library.id_took) INNER JOIN scientists ON fio.id = scientists.id
+WHERE (((scientists.position)=[Введите направление науки ученого]));
+
+
+student_by_course
+SELECT fio.surname, fio.name, fio.patronymic, students.faculty, students.group, library.name, library.year_issue, library.author
+FROM (fio INNER JOIN library ON fio.id = library.id_took) INNER JOIN students ON fio.id = students.id
+WHERE (((students.course)=[Введите курс студентов]));
+
+
+student_by_fac
+SELECT fio.surname, fio.name, fio.patronymic, students.course, students.group, library.name, library.year_issue, library.author
+FROM (fio INNER JOIN library ON fio.id = library.id_took) INNER JOIN students ON fio.id = students.id
+WHERE (((students.faculty)=[Введите факультет студентов]));
+
+
+working_by_pos
+SELECT fio.surname, fio.name, fio.patronymic, library.name, library.year_issue, library.author
+FROM (fio INNER JOIN library ON fio.id = library.id_took) INNER JOIN working ON fio.id = working.id
+WHERE (((working.position)=[Введите должность рабочего]));
